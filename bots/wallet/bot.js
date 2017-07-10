@@ -512,12 +512,41 @@ status.command({
         };
     },
     preview: function (params, context) {
+        var firstRow = status.components.text(
+            {},
+            I18n.t('request_requesting') + " "
+            + status.localizeNumber(params.amount, context.delimiter, context.separator)
+            + " ETH"
+        );
+
+        var markup;
+        if (params["bot-db"]
+            && params["bot-db"]["public"]
+            && params["bot-db"]["public"]["recipient"]
+            && context["chat"]["group-chat"] === true) {
+            var secondRow = status.components.text(
+                {
+                    style: {
+                        color: "#9199a0",
+                        fontSize: 14,
+                        lineHeight: 18
+                    }
+                },
+                "to " + params["bot-db"]["public"]["recipient"]["name"]
+            );
+            markup = [firstRow, secondRow];
+        } else {
+            markup = [firstRow];
+        }
+
         return {
-            markup: status.components.text(
-                {},
-                I18n.t('request_requesting') + " "
-                + status.localizeNumber(params.amount, context.delimiter, context.separator)
-                + " ETH"
+            markup: status.components.view(
+                {
+                    style: {
+                        flexDirection: "column"
+                    }
+                },
+                markup
             )
         };
     },
