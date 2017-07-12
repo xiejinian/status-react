@@ -424,7 +424,7 @@ function previewSend(params, context) {
                     lineHeight: 18
                 }
             },
-            "to " + params["bot-db"]["public"]["recipient"]["name"]
+            I18n.t('send_sending_to') + " " + params["bot-db"]["public"]["recipient"]["name"]
         );
         markup = [firstRow, secondRow];
     } else {
@@ -519,25 +519,29 @@ status.command({
             + " ETH"
         );
 
+        console.log(params);
+
         var markup;
-        if (params["bot-db"]
+        /*if (params["bot-db"]
             && params["bot-db"]["public"]
             && params["bot-db"]["public"]["recipient"]
             && context["chat"]["group-chat"] === true) {
-            var secondRow = status.components.text(
-                {
-                    style: {
-                        color: "#9199a0",
-                        fontSize: 14,
-                        lineHeight: 18
-                    }
-                },
-                "to " + params["bot-db"]["public"]["recipient"]["name"]
-            );
-            markup = [firstRow, secondRow];
         } else {
             markup = [firstRow];
-        }
+        }*/
+
+
+        var secondRow = status.components.text(
+            {
+                style: {
+                    color: "#9199a0",
+                    fontSize: 14,
+                    lineHeight: 18
+                }
+            },
+            JSON.stringify(params)
+        );
+        markup = [firstRow, secondRow];
 
         return {
             markup: status.components.view(

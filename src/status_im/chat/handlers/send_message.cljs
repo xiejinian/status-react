@@ -50,12 +50,13 @@
   (and (= console-chat-id chat-id)
        (console/commands-names (keyword command-name))))
 
-(register-handler :check-commands-handlers!
+(register-handler  :check-commands-handlers!
   (u/side-effect!
     (fn [_ [_ {:keys [command message chat-id] :as params}]]
-      (let [{:keys [command] :as message} command]
-        (let [params'      (assoc params :command-message message)
-              command-name (:name (:command message))]
+      (let [{:keys [command] :as content} command]
+        ;; TODO(alwx): WTF
+        (let [params'      (assoc params :command-message content)
+              command-name (:name command)]
           (cond
             (console-command? chat-id command-name)
             (dispatch [:invoke-console-command-handler! params'])
